@@ -2,6 +2,7 @@ package com.example.unitTest.services;
 
 import com.example.unitTest.entities.UserEntity;
 import com.example.unitTest.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +29,13 @@ public class UserService {
     // Restituisce l'utente passando l'id
     public Optional<UserEntity> getUserById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
-        if(user.isPresent()) {
-            return user;
-        }
-        return Optional.empty();
+        return user;
     }
 
     // Modifica l'utente
     public UserEntity updateUserById(UserEntity userMod, Long id){
         if(userMod == null) throw new IllegalArgumentException();
-        if(!userRepository.existsById(id));
+        if(!userRepository.existsById(id)) throw new EntityNotFoundException("Utente non trovato");
 
         UserEntity user = userRepository.findById(id).get();
 
@@ -52,7 +50,7 @@ public class UserService {
     public void deleteUser(Long id){
         if (userRepository.existsById(id)){
             userRepository.deleteById(id);
-        } else throw new IllegalArgumentException();
+        } else throw new EntityNotFoundException("Utente non trovato");
     }
 
     //Cancella fisicamente tutti gli utenti -- cancellazione logica? in tal caso inserire stato della cancellazione

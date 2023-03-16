@@ -12,3 +12,19 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: test
+    password: test
+    driver-class-name:  org.h2.Driver
+  jpa:
+    database: h2
+  h2:
+    console:
+      enabled: true
